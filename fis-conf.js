@@ -7,30 +7,32 @@
 fis
 .config.set('project.watch.usePolling', true)
 .set('project.files', '/src/index.html')
+
+.media('fedev')
 .set('project.ignore', [
   '/output/**',
-  // '/node_modules/**',
+  '/bin/**',
+  '/dist/**',
   '.git/**',
   '.svn/**',
   'Vagrantfile',
   '.vagrantfile/**',
-  '*.sh',
-  'fis-conf.js',
+  '**.sh',
   'package.json',
   '.env',
   '.env.example',
   'artisan',
   'composer.json',
   'gulpfile.js',
+  'Gruntfile.js',
+  'fis-conf.js',
   '.gitignore',
-  '*.xml',
-  '*.yml',
-  '**/*.md',
-  // '**/*.css'
-  //'/test/**',
+  '.gitattribute',
+  '**.xml',
+  '**.yml',
+  '**.md',
+  'npm-debug.log',
 ])
-
-.media('fedev')
 .hook('commonjs', {
   baseUrl: './src/modules',
   extList: ['.js', '.jsx']
@@ -53,6 +55,25 @@ fis
 })
 
 .media('build')
+.hook('commonjs', {
+  baseUrl: './src/modules',
+  extList: ['.js', '.jsx']
+})
+.match('{/src/modules/**.js,*.jsx}', {
+  parser: fis.plugin('babel-5.x', {
+      optional: ["es7.decorators", "es7.classProperties"]
+  }),
+  rExt: '.js'
+})
+.hook('node_modules')
+.match('/{node_modules,src/modules}/**.{js,jsx}', {
+  isMod: true
+})
+.match('::package', {
+  postpackager: fis.plugin('loader', {
+    useInlineMap: true
+  })
+})
 .match('*.{js,jsx}', {
   optimizer: fis.plugin('uglify-js')
 })
