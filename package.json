@@ -23,9 +23,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "preview": "",
-    "fedev": "",
+    "cleanfedev":"sudo rm -rf /vagrant/debug/.fis3-tmp/www/ 1>/dev/null 2>&1;exit 0;",
     "rddev": "",
-    "build": ""
+    "clean": "sudo rm -rf bin/",
+    "prefedev":"sudo npm run cleanfedev",
+    "prebuild": "sudo npm run clean",
+    "fedev": "sudo fis3 release fedev -cwd /vagrant/debug/.fis3-tmp/www/;",
+    "build": "sudo fis3 release build -cd ./bin"
   },
   "keywords": [
     "redux"
