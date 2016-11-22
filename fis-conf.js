@@ -48,6 +48,9 @@ fis
 .match('/{node_modules,src/modules}/**.{js,jsx}', {
   isMod: true
 })
+.match('/node_modules/**.js', {
+  packTo: '/src/vender.js'
+})
 .match('::package', {
   postpackager: fis.plugin('loader', {
     useInlineMap: true
@@ -77,11 +80,15 @@ fis
 .match('*.{js,jsx}', {
   optimizer: fis.plugin('uglify-js')
 })
-.match('::package', {
+.match('::packager', {
   packager: fis.plugin('deps-pack', {
+  'pkg/vendor.js': [
+      '/src/modules/index.jsx:deps',
+      '!/src/modules/**'
+    ],
     'pkg/index.js': [
-      'modules/index.jsx',
-      'modules/index.jsx:deps',
+      '/src/modules/index.jsx',
+      '/src/modules/index.jsx:deps'
     ]
   })
-})
+});

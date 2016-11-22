@@ -27,8 +27,11 @@
     "rddev": "",
     "clean": "sudo rm -rf bin/",
     "prefedev":"sudo npm run cleanfedev",
+    "prereview":"sudo npm run build && sudo npm run prefedev",
     "prebuild": "sudo npm run clean",
+
     "fedev": "sudo fis3 release fedev -cwd /vagrant/debug/.fis3-tmp/www/;",
+    "review": "sudo cp -rf ./bin/** /vagrant/debug/.fis3-tmp/www/;",
     "build": "sudo fis3 release build -cd ./bin"
   },
   "keywords": [
