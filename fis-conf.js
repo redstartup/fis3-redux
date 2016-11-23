@@ -79,7 +79,7 @@ fis
 
 .media('fedev')
 .match('/node_modules/**.js', {
-  packTo: '/src/vendor.js'
+  packTo: '/src/static/vendor.js'
 })
 
 .media('build')
