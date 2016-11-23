@@ -49,6 +49,9 @@ fis
   }),
   rExt: '.js'
 })
+.match('/src/modules/components/**.jsx', {
+    useSameNameRequire: true
+})
 .hook('node_modules')
 .match('/{node_modules,src/modules}/**.{js,jsx}', {
   isMod: true
