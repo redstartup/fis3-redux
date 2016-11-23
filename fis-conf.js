@@ -37,12 +37,18 @@ fis
     fis.plugin('js-require-css')
   ]
 })
-.match('**/*.less', {//支持less
+.match('**/*.less', {
+    postprocessor: fis.plugin('less-autoprefix',{}),
     rExt: '.css',
     parser: fis.plugin('less-2.x', {
     })
 })
-.match('*.{less,sass,css}', {//压缩css
+.match('**/*.scss', {
+    rExt: '.css', 
+    parser: fis.plugin('node-sass', {
+    })
+})
+.match('*.{less,sass,css}', {
     optimizer: fis.plugin('clean-css', {
         'keepBreaks': true,
     })
@@ -77,15 +83,15 @@ fis
 .media('fedev')
 
 .media('build')
-.match('*.{js,jsx,ts}', {//压缩js
+.match('*.{js,jsx,ts}', {
   optimizer: fis.plugin('uglify-js')
 })
-.match('*.{less,sass,css}', {//压缩css
+.match('*.{less,sass,css}', {
     optimizer: fis.plugin('clean-css', {
         'keepBreaks': false,
     })
 })
-.match('::packager', {//打包策略
+.match('::packager', {
   packager: fis.plugin('deps-pack', {
   'pkg/vendor.js': [
       '/src/modules/index.jsx:deps',
