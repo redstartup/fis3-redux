@@ -33,6 +33,11 @@ fis
   '**.md',
   'npm-debug.log',
 ])
+.match('**/*.less', {
+    rExt: '.css',
+    parser: fis.plugin('less-2.x', {
+    })
+})
 .hook('commonjs', {
   baseUrl: './src/modules',
   extList: ['.js', '.jsx']
