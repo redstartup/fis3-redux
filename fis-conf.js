@@ -7,8 +7,6 @@
 fis
 .config.set('project.watch.usePolling', true)
 .set('project.files', '/src/index.html')
-
-.media('fedev')
 .set('project.ignore', [
   '/output/**',
   '/bin/**',
@@ -33,6 +31,28 @@ fis
   '**.md',
   'npm-debug.log',
 ])
+.match('*.{js,es,es6,jsx,ts,tsx}', {
+  preprocessor: [
+    fis.plugin('js-require-file'),
+    fis.plugin('js-require-css')
+  ]
+})
+.match('**/*.less', {
+    postprocessor: fis.plugin('less-autoprefix',{}),
+    rExt: '.css',
+    parser: fis.plugin('less-2.x', {
+    })
+})
+.match('**/*.scss', {
+    rExt: '.css', 
+    parser: fis.plugin('node-sass', {
+    })
+})
+.match('*.{less,sass,css}', {
+    optimizer: fis.plugin('clean-css', {
+        'keepBreaks': true,
+    })
+})
 .hook('commonjs', {
   baseUrl: './src/modules',
   extList: ['.js', '.jsx']
@@ -44,12 +64,12 @@ fis
   }),
   rExt: '.js'
 })
+.match('/src/modules/components/**.jsx', {
+    useSameNameRequire: true
+})
 .hook('node_modules')
 .match('/{node_modules,src/modules}/**.{js,jsx}', {
   isMod: true
-})
-.match('/node_modules/**.js', {
-  packTo: '/src/vender.js'
 })
 .match('::package', {
   postpackager: fis.plugin('loader', {
@@ -57,28 +77,19 @@ fis
   })
 })
 
+.media('fedev')
+.match('/node_modules/**.js', {
+  packTo: '/src/static/vendor.js'
+})
+
 .media('build')
-.hook('commonjs', {
-  baseUrl: './src/modules',
-  extList: ['.js', '.jsx']
-})
-.match('{/src/modules/**.js,*.jsx}', {
-  parser: fis.plugin('babel-5.x', {
-      optional: ["es7.decorators", "es7.classProperties"]
-  }),
-  rExt: '.js'
-})
-.hook('node_modules')
-.match('/{node_modules,src/modules}/**.{js,jsx}', {
-  isMod: true
-})
-.match('::package', {
-  postpackager: fis.plugin('loader', {
-    useInlineMap: true
-  })
-})
-.match('*.{js,jsx}', {
+.match('*.{js,jsx,ts}', {
   optimizer: fis.plugin('uglify-js')
+})
+.match('*.{less,sass,css}', {
+    optimizer: fis.plugin('clean-css', {
+        'keepBreaks': false,
+    })
 })
 .match('::packager', {
   packager: fis.plugin('deps-pack', {
@@ -86,9 +97,19 @@ fis
       '/src/modules/index.jsx:deps',
       '!/src/modules/**'
     ],
-    'pkg/index.js': [
+  'pkg/index.js': [
       '/src/modules/index.jsx',
       '/src/modules/index.jsx:deps'
-    ]
+    ],
+  'pkg/modules.css':[
+      '/src/modules/index.jsx:deps'
+    ],
+  }),
+  spriter: fis.plugin('csssprites', {
+      layout: 'matrix',
+      margin: '15'
   })
-});
+})
+.match('**.{js,css,jsx,less}',{
+  useHash:true,
+})
