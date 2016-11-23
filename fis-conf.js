@@ -71,9 +71,6 @@ fis
 .match('/{node_modules,src/modules}/**.{js,jsx}', {
   isMod: true
 })
-.match('/node_modules/**.js', {
-  packTo: '/src/vender.js'
-})
 .match('::package', {
   postpackager: fis.plugin('loader', {
     useInlineMap: true
@@ -81,6 +78,9 @@ fis
 })
 
 .media('fedev')
+.match('/node_modules/**.js', {
+  packTo: '/src/vendor.js'
+})
 
 .media('build')
 .match('*.{js,jsx,ts}', {
@@ -110,6 +110,6 @@ fis
       margin: '15'
   })
 })
-.match('src/**.{js,css,jsx,less}',{
+.match('**.{js,css,jsx,less}',{
   useHash:true,
 })
