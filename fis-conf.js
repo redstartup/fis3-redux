@@ -66,6 +66,11 @@ fis
 })
 
 .media('build')
+.match('**/*.less', {
+    rExt: '.css',
+    parser: fis.plugin('less-2.x', {
+    })
+})
 .hook('commonjs', {
   baseUrl: './src/modules',
   extList: ['.js', '.jsx']
@@ -99,4 +104,8 @@ fis
       '/src/modules/index.jsx:deps'
     ]
   })
-});
+})
+
+.match('src/**.{js,css,jsx,less}',{
+  useHash:true,
+})
