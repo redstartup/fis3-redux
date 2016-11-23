@@ -7,8 +7,6 @@
 fis
 .config.set('project.watch.usePolling', true)
 .set('project.files', '/src/index.html')
-
-.media('fedev')
 .set('project.ignore', [
   '/output/**',
   '/bin/**',
@@ -33,9 +31,20 @@ fis
   '**.md',
   'npm-debug.log',
 ])
-.match('**/*.less', {
+.match('*.{js,es,es6,jsx,ts,tsx}', {
+  preprocessor: [
+    fis.plugin('js-require-file'),
+    fis.plugin('js-require-css')
+  ]
+})
+.match('**/*.less', {//支持less
     rExt: '.css',
     parser: fis.plugin('less-2.x', {
+    })
+})
+.match('*.{less,sass,css}', {//压缩css
+    optimizer: fis.plugin('clean-css', {
+        'keepBreaks': true,
     })
 })
 .hook('commonjs', {
@@ -65,47 +74,36 @@ fis
   })
 })
 
+.media('fedev')
+
 .media('build')
-.match('**/*.less', {
-    rExt: '.css',
-    parser: fis.plugin('less-2.x', {
-    })
-})
-.hook('commonjs', {
-  baseUrl: './src/modules',
-  extList: ['.js', '.jsx']
-})
-.match('{/src/modules/**.js,*.jsx}', {
-  parser: fis.plugin('babel-5.x', {
-      optional: ["es7.decorators", "es7.classProperties"]
-  }),
-  rExt: '.js'
-})
-.hook('node_modules')
-.match('/{node_modules,src/modules}/**.{js,jsx}', {
-  isMod: true
-})
-.match('::package', {
-  postpackager: fis.plugin('loader', {
-    useInlineMap: true
-  })
-})
-.match('*.{js,jsx}', {
+.match('*.{js,jsx,ts}', {//压缩js
   optimizer: fis.plugin('uglify-js')
 })
-.match('::packager', {
+.match('*.{less,sass,css}', {//压缩css
+    optimizer: fis.plugin('clean-css', {
+        'keepBreaks': false,
+    })
+})
+.match('::packager', {//打包策略
   packager: fis.plugin('deps-pack', {
   'pkg/vendor.js': [
       '/src/modules/index.jsx:deps',
       '!/src/modules/**'
     ],
-    'pkg/index.js': [
+  'pkg/index.js': [
       '/src/modules/index.jsx',
       '/src/modules/index.jsx:deps'
-    ]
+    ],
+  'pkg/modules.css':[
+      '/src/modules/index.jsx:deps'
+    ],
+  }),
+  spriter: fis.plugin('csssprites', {
+      layout: 'matrix',
+      margin: '15'
   })
 })
-
 .match('src/**.{js,css,jsx,less}',{
   useHash:true,
 })
