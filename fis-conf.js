@@ -107,10 +107,16 @@ fis
   })
 
   .media('build')
-
-  // .match('/src/modules/(**/*{js,jsx,css,sass,less,scss})',{
-  //   release:false,
-  // })
+  .match('{/**/*.js,/**/*.jsx}', {
+    parser: fis.plugin('babel-5.x', {
+      sourceMaps: false,
+      optional: ["es7.decorators", "es7.classProperties"]
+    }),
+    rExt: '.js',
+  })
+  .match('/src/(modules/**)',{
+    release:'$1',
+  })
   .match('/**/*.{js,jsx,ts}', {
     optimizer: fis.plugin('uglify-js')
   })
