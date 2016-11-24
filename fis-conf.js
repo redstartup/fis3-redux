@@ -81,24 +81,36 @@ fis
   .match('/{node_modules,src/modules}/**.{js,jsx}', {
     isMod: true
   })
+  .match('/src/(*.html)',{
+    release:'/view/$1'
+  })
   .match('::package', {
     postpackager: fis.plugin('loader', {
       useInlineMap: true
     })
   })
+  .match('/src/(static/**)',{
+    release:'/$1'
+  })
 
   .media('fedev')
-
   .match('/**/*.{less,sass,scss,css}', {
     optimizer: fis.plugin('clean-css', {
       'keepBreaks': true,
     })
   })
   .match('/node_modules/**.js', {
-    packTo: '/src/static/vendor.js'
+    packTo: '/static/vendor.js'
+  })
+  .match('/src/(**)',{
+    release:'/static/$1'
   })
 
   .media('build')
+
+  // .match('/src/modules/(**/*{js,jsx,css,sass,less,scss})',{
+  //   release:false,
+  // })
   .match('/**/*.{js,jsx,ts}', {
     optimizer: fis.plugin('uglify-js')
   })
@@ -109,15 +121,15 @@ fis
   })
   .match('::packager', {
     packager: fis.plugin('deps-pack', {
-      'pkg/vendor.js': [
+      '/node_modules/vendor.js': [
         '/src/modules/index.jsx:deps',
         '!/src/modules/**'
       ],
-      'pkg/index.js': [
+      '/static/pkg/index.js': [
         '/src/modules/index.jsx',
         '/src/modules/index.jsx:deps'
       ],
-      'pkg/modules.css': [
+      '/static/pkg/modules.css': [
         '/src/modules/index.jsx:deps'
       ],
     }),
