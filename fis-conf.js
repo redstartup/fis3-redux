@@ -102,8 +102,11 @@ fis
   .match('/node_modules/**.js', {
     packTo: '/static/vendor.js'
   })
-  .match('/src/(**)',{
-    release:'/static/$1'
+  // .match('/src/(**)',{
+  //   release:'/static/$1'
+  // })
+  .match('/src/(modules/**)',{
+    release:'$1',
   })
 
   .media('build')
