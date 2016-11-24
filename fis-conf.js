@@ -100,7 +100,7 @@ fis
     })
   })
   .match('/node_modules/**.js', {
-    packTo: '/static/vendor.js'
+    packTo: '/node_modules/vendor.js'
   })
   // .match('/src/(**)',{
   //   release:'/static/$1'
