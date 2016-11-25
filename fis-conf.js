@@ -67,7 +67,7 @@ fis
     baseUrl: './src/modules',
     extList: ['.js', '.jsx']
   })
-  .match('{/**/*.js,/**/*.jsx}', {
+  .match('{/src,/node_modules}/**/*.{js,jsx}', {
     parser: fis.plugin('babel-5.x', {
       sourceMaps: true,
       optional: ["es7.decorators", "es7.classProperties"]
