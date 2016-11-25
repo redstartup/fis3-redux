@@ -40,27 +40,24 @@ fis
     '**.md',
     'npm-debug.log',
   ])
-  .match('/**/*.{js,es,es6,jsx,ts,tsx}', {
+  .match('/src/**/*.{js,es,es6,jsx,ts,tsx}', {
     preprocessor: [
       fis.plugin('js-require-file'),
       fis.plugin('js-require-css')
     ]
   })
-  // .match('/src/*.{css,less,sass,scss}', {
-  //   postprocessor: fis.plugin('rjy-postcss')
-  // })
-  .match('/**/*.less', {
+  .match('/src/{modules/components/**/*,static/**}.less', {
     // postprocessor: fis.plugin('less-autoprefix', {}),
     rExt: '.css',
     parser: fis.plugin('less-2.x', {
     })
   })
-  .match('/**/*.scss', {
+  .match('/src/{modules/components/**/*,static/**}.{sass,scss}', {
     rExt: '.css',
     parser: fis.plugin('node-sass', {
     })
   })
-  .match('/**/*.{css,less,sass,scss}', {
+  .match('/src/{modules/components/**/*,static/**}.{sass,scss,less,css}', {
     postprocessor: fis.plugin('rjy-postcss')
   })
   .hook('commonjs', {
@@ -94,23 +91,15 @@ fis
   })
 
   .media('fedev')
-  .match('/**/*.{less,sass,scss,css}', {
-    optimizer: fis.plugin('clean-css', {
-      'keepBreaks': true,
-    })
-  })
   .match('/node_modules/**.js', {
     packTo: '/node_modules/vendor.js'
   })
-  // .match('/src/(**)',{
-  //   release:'/static/$1'
-  // })
   .match('/src/(modules/**)',{
     release:'$1',
   })
 
   .media('build')
-  .match('{/**/*.js,/**/*.jsx}', {
+  .match('{/src,/node_modules}/**/*.{js,jsx}', {
     parser: fis.plugin('babel-5.x', {
       sourceMaps: false,
       optional: ["es7.decorators", "es7.classProperties"]
@@ -120,10 +109,10 @@ fis
   .match('/src/(modules/**)',{
     release:'$1',
   })
-  .match('/**/*.{js,jsx,ts}', {
+  .match('{/src,/node_modules}/**/*.{js,jsx}', {
     optimizer: fis.plugin('uglify-js')
   })
-  .match('/**/*.{less,sass,css,scss}', {
+  .match('/src/{modules/components/**/*,static/**}.{sass,scss,less,css}', {
     optimizer: fis.plugin('clean-css', {
       'keepBreaks': false,
     })
@@ -147,6 +136,6 @@ fis
       margin: '15'
     })
   })
-  .match('/**/*.{js,css,jsx,less,sass,scss}', {
+  .match('{/src/**,/node_modules/**}.{js,css,jsx,less,sass,scss,ts,tsx}', {
     useHash: true,
   })
