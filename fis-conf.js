@@ -74,7 +74,9 @@ fis
   .match('/src/modules/components/**.jsx', {
     useSameNameRequire: true
   })
-  .hook('node_modules')
+  .hook('node_modules', {
+    ignoreDevDependencies: true
+  })
   .match('/{node_modules,src/modules}/**.{js,jsx}', {
     isMod: true
   })
@@ -87,37 +89,19 @@ fis
     })
   })
   .match('/src/(static/**)',{
-    release:'/$1'
+    release:'/$1',
+  })
+  .match('/src/(modules/**)',{
+    release:'$1',
   })
 
   .media('fedev')
   .match('/node_modules/**.js', {
     packTo: '/node_modules/vendor.js'
   })
-  .match('/src/(modules/**)',{
-    release:'$1',
-  })
 
   .media('build')
-  .match('{/src,/node_modules}/**/*.{js,jsx}', {
-    parser: fis.plugin('babel-5.x', {
-      sourceMaps: false,
-      optional: ["es7.decorators", "es7.classProperties"]
-    }),
-    rExt: '.js',
-  })
-  .match('/src/(modules/**)',{
-    release:'$1',
-  })
-  .match('{/src,/node_modules}/**/*.{js,jsx}', {
-    optimizer: fis.plugin('uglify-js')
-  })
-  .match('/src/{modules/components/**/*,static/**}.{sass,scss,less,css}', {
-    optimizer: fis.plugin('clean-css', {
-      'keepBreaks': false,
-    })
-  })
-  .match('::packager', {
+  .match('::package', {
     packager: fis.plugin('deps-pack', {
       '/node_modules/vendor.js': [
         '/src/modules/index.jsx:deps',
@@ -134,8 +118,33 @@ fis
     spriter: fis.plugin('csssprites', {
       layout: 'matrix',
       margin: '15'
-    })
+    }),
+  })
+  .match('/src/static/(*.{css,less,sass,scss})',{
+    release:'/static/pkg/$1',
+    useHash:true
+  })
+  .match('{/src,/node_modules}/**/*.{js,jsx}', {
+    parser: fis.plugin('babel-5.x', {
+      sourceMaps: false,
+      optional: ["es7.decorators", "es7.classProperties"]
+    }),
+    rExt: '.js',
+    useHash:true
+  })
+  .match('{/src,/node_modules}/**/*.{js,jsx}', {
+    optimizer: fis.plugin('uglify-js'),
+    useHash:true
+  })
+  .match('/src/{modules/components/**/*,static/**}.{sass,scss,less,css}', {
+    optimizer: fis.plugin('clean-css', {
+      'keepBreaks': false,
+    }),
+    useHash:true,
   })
   .match('{/src/**,/node_modules/**}.{js,css,jsx,less,sass,scss,ts,tsx}', {
     useHash: true,
+  })
+  .match('/src/**.png', {
+    optimizer: fis.plugin('png-compressor')
   })
