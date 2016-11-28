@@ -7,7 +7,8 @@
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-redux": "^4.4.1",
-    "redux": "^3.3.1"
+    "redux": "^3.3.1",
+    "process": "^0.11.9"
   },
   "global_devDependencies": {
     "fis-parser-babel-5.x": "^1.4.0",
@@ -25,22 +26,21 @@
     "fis-postprocessor-rjy-postcss":"^0.1.1"
   },
   "devDependencies": {
-    "process": "^0.11.9",
     "autoprefixer":"^6.5.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "preview": "",
-    "cleanfeserver":"sudo rm -rf /vagrant/debug/.fis3-tmp/www/** 1>/dev/null 2>&1;exit 0;",
+    "cleanfeserver":"sudo rm -rf /vagrant/.debug/.fis3-tmp/www/** 1>/dev/null 2>&1;exit 0;",
     "rddev": "",
     "clean": "sudo rm -rf bin/**",
     "prefedev":"sudo npm run cleanfeserver",
     "prereview":"sudo npm run prefedev && sudo npm run build",
     "prebuild": "sudo npm run clean",
-    "bin2feserver":"sudo cp -rf ./bin/** /vagrant/debug/.fis3-tmp/www/",
+    "bin2feserver":"sudo cp -rf ./bin/** /vagrant/.debug/.fis3-tmp/www/",
 
-    "fedev": "sudo fis3 release fedev -cwd /vagrant/debug/.fis3-tmp/www/",
-    "review": "sudo cp -rf ./bin/** /vagrant/debug/.fis3-tmp/www/",
+    "fedev": "sudo fis3 release fedev -cwd /vagrant/.debug/.fis3-tmp/www/",
+    "review": "sudo cp -rf ./bin/** /vagrant/.debug/.fis3-tmp/www/",
     "build": "sudo fis3 release build -cd ./bin"
   },
   "keywords": [
