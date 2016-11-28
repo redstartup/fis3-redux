@@ -122,7 +122,6 @@ fis
   })
   .match('/src/static/(*.{css,less,sass,scss})',{
     release:'/static/pkg/$1',
-    useHash:true
   })
   .match('{/src,/node_modules}/**/*.{js,jsx}', {
     parser: fis.plugin('babel-5.x', {
@@ -130,21 +129,21 @@ fis
       optional: ["es7.decorators", "es7.classProperties"]
     }),
     rExt: '.js',
-    useHash:true
   })
-  .match('{/src,/node_modules}/**/*.{js,jsx}', {
-    optimizer: fis.plugin('uglify-js'),
-    useHash:true
+  .match('{/src,/node_modules}/**/*.{js,jsx,ts,tsx}', {
+    optimizer: fis.plugin('uglify-js')
   })
   .match('/src/{modules/components/**/*,static/**}.{sass,scss,less,css}', {
     optimizer: fis.plugin('clean-css', {
       'keepBreaks': false,
     }),
-    useHash:true,
   })
   .match('{/src/**,/node_modules/**}.{js,css,jsx,less,sass,scss,ts,tsx}', {
     useHash: true,
   })
   .match('/src/**.png', {
     optimizer: fis.plugin('png-compressor')
+  })
+  .match('**.{js,css}',{
+    useHash:true,
   })
