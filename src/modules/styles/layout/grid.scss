@@ -1,0 +1,47 @@
+/*!
+*author：wanghongxin
+*qq:2262118088
+*/
+/*!
+*require:../function/
+*/
+
+@import '../function/mixin';
+
+$FLOWLINE:960;
+$N:12;
+$GUTTER:30;
+
+.page{
+    min-width: 960px;
+    .container{
+        width:$FLOWLINE#{px};
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-left: auto;
+        margin-right: auto;
+        box-sizing: border-box;
+        .row{
+            margin-left: (-1 * ceil($GUTTER/2))#{px};
+            margin-right: (-1 * floor($GUTTER/2))#{px};
+            box-sizing: border-box;
+            @for $i from 1 through $N {
+                .col-#{$i}{
+                    width:($i / $N) * 100% ;
+                    padding-left: ceil($GUTTER/2)#{px};
+                    padding-right: floor($GUTTER/2)#{px};
+                    box-sizing: border-box;
+                    float: left;
+                    text-align: center;
+                }
+            }
+            
+            @extend %clearfix;
+        }
+        @extend %clearfix;
+    }
+}
+
+
+
+
